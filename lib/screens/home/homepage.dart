@@ -1,8 +1,11 @@
 import 'package:admin_tech/constants/routes.dart';
 import 'package:admin_tech/provider/app_provider.dart';
 import 'package:admin_tech/screens/category_view/category_view.dart';
+import 'package:admin_tech/screens/notification_screen/notification_screen.dart';
+import 'package:admin_tech/screens/order_list/order_list.dart';
 import 'package:admin_tech/screens/product_view/products_view.dart';
 import 'package:admin_tech/screens/users_view/usersView.dart';
+import 'package:admin_tech/widgets/primary_button/primary_button.dart';
 import 'package:admin_tech/widgets/singleDash_Item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -60,6 +63,13 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 4,),
               const Text("Saurabh Gupta"),
               const Text("Alex@gmail.com"),
+              const SizedBox(height: 10,),
+              PrimaryButton(
+                  onPressed: () {
+                    Routes.instance.push(const NotificationScreen(), context);
+                  },
+                  title: "Send Notification"
+              ),
               const SizedBox(height: 4,),
               GridView.count(
                 shrinkWrap: true,
@@ -90,27 +100,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SingleDashItem(
                     subtitle: "Earning",
-                    title: "\$500",
+                    title: "\u{20B9}${appProvider.getTotalEarning}",
                     onPressed: () {  },
                   ),
                   SingleDashItem(
                     subtitle: "Pending Orders",
-                    title: "1",
-                    onPressed: () {  }
+                    title:appProvider.getPendingOrderList.length.toString(),
+                    onPressed: () {
+                      Routes.instance.push(const OrderList(title: 'Pending',), context);
+                    }
                     ,),
                   SingleDashItem(
                     subtitle: "Completed Orders",
-                    title: "2", onPressed: () {  },
+                    title: appProvider.getCompletedOrderList.length.toString(),
+                    onPressed: () {
+                      Routes.instance.push(const OrderList(title: 'Completed',), context);
+                    },
                   ),
                   SingleDashItem(
                     subtitle: "Cancel Orders",
-                    title: "2",
-                    onPressed: () {  },
+                    title: appProvider.getCancelOrderList.length.toString(),
+                    onPressed: () {
+                      Routes.instance.push(const OrderList(title: 'Cancel',), context);
+                    },
                   ),
                   SingleDashItem(
                     subtitle: "Delivered Orders",
-                    title: "0",
-                    onPressed: () {  },
+                    title: appProvider.getDeliveryOrderList.length.toString(),
+                    onPressed: () {
+                      Routes.instance.push(const OrderList(title: 'Delivery',), context);
+                    },
                   )
                 ],
               )

@@ -10,6 +10,7 @@ class UserModel {
     required this.id,
     required this.name,
     required this.email,
+    this.notificationToken
 
   });
 
@@ -17,12 +18,14 @@ class UserModel {
   String? id;
   String? name;
   String? email;
+  String? notificationToken;
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       UserModel(
         id: json["id"],
         image: json["image"],
         email: json["email"],
         name:json["name"],
+        notificationToken:json["notificationToken"]??"",
       );
 
 
@@ -32,6 +35,7 @@ class UserModel {
         "image": image,
         "name": name,
         "email": email,
+        "notificationToken": notificationToken,
       };
 
   UserModel copyWith({

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:admin_tech/firebase/firebase_storage/firebase_storage.dart';
+import 'package:admin_tech/models/order_model/order_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../constants/constants.dart';
@@ -47,6 +48,7 @@ class FirestoreHelper {
     try{
       await _firebaseFirestore.collection("users").doc(userModel.id).update(userModel.toJson());
     }catch(e){
+
     }
   }
 
@@ -107,7 +109,83 @@ class FirestoreHelper {
     }
   }
 
+  Future<ProductModel> addSingleProduct(
+      File image,
+      String name,
+      String categoryId,
+      String price,
+      String desc) async{
+    DocumentReference reference =
+    _firebaseFirestore.collection("categories").doc(categoryId).collection("products").doc();
+    String imageUrl = await FirebaseStorageHelper.instance.uploadUserImage(reference.id, image);
+    ProductModel addProduct  = ProductModel(
+        image: imageUrl,
+        name: name,
+        categoryId: categoryId,
+        desc: desc,
+        isFavourite: false,
+        price: int.parse(price),
+        qty: 1, id: reference.id
+    );
+    await reference.set(addProduct.toJson());
+    return addProduct;
+  }
 
 
+  Future<List<OrderModel>> getCompletedOrder() async{
+   QuerySnapshot<Map<String, dynamic>>  completedOrder =
+       await _firebaseFirestore.collection("orders").where("status",isEqualTo:"Completed").get();
+   List<OrderModel> completedOrderList =
+       completedOrder.docs.map((e) => OrderModel.fromJson(e.data())).toList();
+   print("list ${completedOrderList}");
+   return completedOrderList;
+
+
+  }
   
+  Future<List<OrderModel>> getCancelOrder() async{
+    QuerySnapshot<Map<String,dynamic>> cancelOrder = 
+    await  _firebaseFirestore.collection("orders").where("status",isEqualTo: "cancel").get();
+    List<OrderModel> cancelOrderList =
+        cancelOrder.docs.map((e) => OrderModel.fromJson(e.data())).toList();
+    return cancelOrderList;
+  }
+
+
+
+  Future<List<OrderModel>> getPendingOrder() async{
+    QuerySnapshot<Map<String,dynamic>> pendingOrder =
+    await  _firebaseFirestore.collection("orders").where("status",isEqualTo: "Pending").get();
+    List<OrderModel> pendingOrderList =
+    pendingOrder.docs.map((e) => OrderModel.fromJson(e.data())).toList();
+    return pendingOrderList;
+  }
+
+  Future<List<OrderModel>> getDeliveryOrder() async{
+    QuerySnapshot<Map<String,dynamic>> deliveryOrder =
+    await  _firebaseFirestore.collection("orders").where("status",isEqualTo: "Delivery").get();
+    List<OrderModel> pendingDeliveryList =
+    deliveryOrder.docs.map((e) => OrderModel.fromJson(e.data())).toList();
+    return pendingDeliveryList;
+  }
+
+  Future<void> updateOrder(OrderModel orderModel, String status) async{
+    await _firebaseFirestore
+        .collection("usersOrders")
+        .doc(orderModel.userId)
+        .collection("orders").doc(orderModel.orderId)
+        .update({ "status" : status });
+
+    await _firebaseFirestore
+        .collection("orders")
+        .doc(orderModel.orderId)
+        .update({
+      "status" : status
+    });
+  }
+
+
+
+
+
 }

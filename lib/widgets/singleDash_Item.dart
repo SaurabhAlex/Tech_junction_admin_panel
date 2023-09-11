@@ -18,7 +18,7 @@ class SingleDashItem extends StatelessWidget {
           child:  Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(title, style: const TextStyle(fontSize:32, fontWeight: FontWeight.bold),),
+              Text(title, style:  TextStyle(fontSize:subtitle == "Earning"? 28:32, fontWeight: FontWeight.bold),),
               Text(subtitle, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w400),)
             ],
           ),

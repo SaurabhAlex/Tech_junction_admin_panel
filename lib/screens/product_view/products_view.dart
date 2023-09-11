@@ -1,6 +1,8 @@
+import 'package:admin_tech/screens/product_view/add_product/add_product.dart';
 import 'package:admin_tech/screens/product_view/single_product_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../constants/routes.dart';
 import '../../models/product_model/product_model.dart';
 import '../../provider/app_provider.dart';
 
@@ -23,7 +25,7 @@ class _ProductsViewState extends State<ProductsView> {
         actions: [
           IconButton(
               onPressed: () {
-                // Routes.instance.push(const AddCategory(), context);
+                Routes.instance.push(const AddProduct(), context);
               },
               icon: const Icon(Icons.add_circle_outline_rounded))
         ],
