@@ -73,7 +73,7 @@ Future<void> sendNotification(List<String?> usersToken, String title, String bod
     }
   }
   allUsersToken = newAllUsersToken;
-  const String serverKey = 'AAAAowRUxvo:APA91bEIoBhlHvrnLl4zqidMcnHoqpqK6IXQsMolaAlh8iL-HfUrJl5Tdx2jhn1rSmKtDCnMDCec9DP-tQJdCC3XbJuUiLPxITaBiWqYn_sCEv9OotwzA8rPzOEEsGxv_xqoYQhrlvS_';
+  const String serverKey = 'serverkey';
 
   const String firebaseUrl = 'https://fcm.googleapis.com/fcm/send';
 
